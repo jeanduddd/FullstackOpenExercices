@@ -12,6 +12,14 @@ const Button = ({onClick, name}) => {
   )
 }
 
+const StatisticLine = ({name, value}) => {
+  return (
+    <>
+      <p style={{margin: 0}}>{name} {value} {name === 'positive' ? '%' : '' }</p>
+    </>
+  )
+}
+
 const Statistics = ({good,neutral,bad}) => {
 
   const total = good+neutral+bad
@@ -20,12 +28,12 @@ const Statistics = ({good,neutral,bad}) => {
 
   return (
     <>
-      <p style={{margin: 0}}>good {good}</p>
-      <p style={{margin: 0}}>neutral {neutral}</p>
-      <p style={{margin: 0}}>bad {bad}</p>
-      <p style={{margin: 0}}>total {total}</p>
-      <p style={{margin: 0}}>average {average}</p>
-      <p style={{margin: 0}}>positive {positive} %</p>
+      <StatisticLine name="good" value={good}></StatisticLine>
+      <StatisticLine name="neutral" value={neutral}></StatisticLine>
+      <StatisticLine name="bad" value={bad}></StatisticLine>
+      <StatisticLine name="total" value={total}></StatisticLine>
+      <StatisticLine name="average" value={average}></StatisticLine>
+      <StatisticLine name="positive" value={positive}></StatisticLine>
     </>
   )
 }
