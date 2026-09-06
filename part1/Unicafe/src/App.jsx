@@ -46,7 +46,11 @@ const App = () => {
         <Button onClick={() => addOne(setBad, bad)} name='bad'></Button>
       </div>
       <h2>statistics</h2>
-      <Statistics good={good} neutral={neutral} bad={bad}></Statistics>
+      {good == 0 && neutral == 0 && bad == 0 ? (
+        <p>No feedback given</p>
+      ) : (
+        <Statistics good={good} neutral={neutral} bad={bad}></Statistics>
+      )}
     </div>
   )
 }
