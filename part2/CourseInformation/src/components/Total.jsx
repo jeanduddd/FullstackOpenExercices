@@ -1,6 +1,6 @@
 const Total = (props) => {
-  const exercises = props.parts.map((part) => part.exercises)
-  const sum = exercises.reduce((total, value) => total + value, 0);
+  
+  const sum = props.parts.reduce((total, part) => total + part.exercises, 0);
   
   return (
     <>
