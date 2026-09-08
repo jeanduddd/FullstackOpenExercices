@@ -3,6 +3,7 @@ import axios from 'axios'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import Notification from './components/Notification'
 import personService from './services/personService'
 
 const App = () => {
@@ -11,6 +12,8 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
 
   const [newFilter, setNewFilter] = useState('')
+
+  const [notificationMessage, setNotificationMessage] = useState(null)
 
   useEffect   (() => {
     personService
@@ -40,7 +43,8 @@ const App = () => {
     personService
     .deletePerson(id)
     .then(() => {
-      setPersons(persons.filter(person => person.id !== id))
+      setPersons(
+        persons.filter(person => person.id !== id))
     })
   }
 
@@ -59,6 +63,12 @@ const App = () => {
       .createPerson(nameObject)
       .then(response => {        
         setPersons(persons.concat(response))
+        setNotificationMessage(
+          `Added ${response.name}`
+        )
+        setTimeout(() => {
+          setNotificationMessage(null)
+        }, 5000)
       })
       
     }
@@ -71,6 +81,12 @@ const App = () => {
         .modifyNumber(changedPerson.id, changedPerson)
         .then(response => {
           setPersons(persons.map(someone => someone.id === response.id ? response : someone))
+          setNotificationMessage(
+            `${response.name}'s number modified`
+          )
+          setTimeout(() => {
+            setNotificationMessage(null)
+          }, 5000)
         })
       }
     }
@@ -81,6 +97,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2> 
+      <Notification message={notificationMessage}></Notification>
       <Filter value={newFilter} onChange={handleFilterChange}></Filter>
       <h2>add a new</h2>
       <PersonForm onSubmit={addName} nameValue={newName} onNameChange={handleNameChange} numberValue={newNumber} onNumberChange={handleNumberChange}></PersonForm>
