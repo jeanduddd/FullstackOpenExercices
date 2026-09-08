@@ -37,8 +37,6 @@ const App = () => {
 
   const handleDeletion = (id) => {
     console.log(id)
-    console.log('id à suppr ', id);
-    
     personService
     .deletePerson(id)
     .then(() => {
@@ -65,7 +63,16 @@ const App = () => {
       
     }
     else{
-      alert(`${newName} is already added to phonebook`)
+      const modify = confirm(`${newName} is already added to phonebook, replace old number with a new one ?`)
+      if (modify){
+        const person = persons.find(n => n.name === newName)
+        const changedPerson = { ...person, number: newNumber }
+        personService
+        .modifyNumber(changedPerson.id, changedPerson)
+        .then(response => {
+          setPersons(persons.map(someone => someone.id === response.id ? response : someone))
+        })
+      }
     }
     setNewName('')
     setNewNumber('')
