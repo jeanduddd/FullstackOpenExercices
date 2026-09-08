@@ -14,6 +14,7 @@ const App = () => {
   const [newFilter, setNewFilter] = useState('')
 
   const [notificationMessage, setNotificationMessage] = useState(null)
+  const [success, setSuccess] = useState(true)
 
   useEffect   (() => {
     personService
@@ -38,13 +39,33 @@ const App = () => {
     setNewFilter(event.target.value)
   }
 
-  const handleDeletion = (id) => {
+  const handleDeletion = (person) => {
+    const id = person.id
     console.log(id)
     personService
     .deletePerson(id)
     .then(() => {
       setPersons(
         persons.filter(person => person.id !== id))
+      setSuccess(true)
+      setNotificationMessage(
+        `${person.name} deleted successfully`
+      )
+      setTimeout(() => {
+        setNotificationMessage(null)
+      }, 5000)
+    })
+    .catch((err) => {
+      setSuccess(false)
+      setPersons(
+        persons.filter(person => person.id !== id))
+      setNotificationMessage(
+        `${person.name} already deleted from server`
+      )
+      setTimeout(() => {
+        setNotificationMessage(null)
+      }, 5000)
+
     })
   }
 
@@ -63,6 +84,7 @@ const App = () => {
       .createPerson(nameObject)
       .then(response => {        
         setPersons(persons.concat(response))
+        setSuccess(true)
         setNotificationMessage(
           `Added ${response.name}`
         )
@@ -81,6 +103,7 @@ const App = () => {
         .modifyNumber(changedPerson.id, changedPerson)
         .then(response => {
           setPersons(persons.map(someone => someone.id === response.id ? response : someone))
+          setSuccess(true)
           setNotificationMessage(
             `${response.name}'s number modified`
           )
@@ -97,7 +120,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2> 
-      <Notification message={notificationMessage}></Notification>
+      <Notification message={notificationMessage} success={success}></Notification>
       <Filter value={newFilter} onChange={handleFilterChange}></Filter>
       <h2>add a new</h2>
       <PersonForm onSubmit={addName} nameValue={newName} onNameChange={handleNameChange} numberValue={newNumber} onNumberChange={handleNumberChange}></PersonForm>
