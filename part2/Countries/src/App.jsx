@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import axios from 'axios'
 import SearchCountries from "./components/SearchCountries"
 import CountryList from "./components/CountryList"
+import countryService from "./services/coutriesService"
 
 const App = () => {
 
@@ -16,12 +17,11 @@ const App = () => {
 
   useEffect(() => {
     console.log('fetching countries');
-    axios
-    .get(`https://studies.cs.helsinki.fi/restcountries/api/all`)
+    countryService
+    .getCountries()
     .then(response => {
-      console.log(response.data[0]);
-      setCountries(response.data)
-      
+      console.log(response);
+      setCountries(response)
     })
   }, [])
 
