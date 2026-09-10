@@ -7,6 +7,7 @@ const App = () => {
 
   const [searchedCountry, setSearchedCountry] = useState('')
   const [countries, setCountries] = useState([])
+  const [filteredCountries, setFilteredCountries] = useState([])
 
   const handleFieldChange = (event) => {
     console.log(event.target.value)
@@ -19,16 +20,25 @@ const App = () => {
     .get(`https://studies.cs.helsinki.fi/restcountries/api/all`)
     .then(response => {
       console.log(response.data[0]);
-      setCountries(response.data)  
+      setCountries(response.data)
+      
     })
   }, [])
 
-  console.log('avant ', countries)
+  useEffect(() => {
+    const newFilteredCoutries = countries.filter(country => country.name.common.toLowerCase().includes(searchedCountry.toLowerCase()))
+    setFilteredCountries(newFilteredCoutries)
+    console.log('filter', searchedCountry);
+    console.log("filtered", newFilteredCoutries);
+    
+  }, [searchedCountry, countries])
+
+  console.log("ici", filteredCountries)
 
   return (
     <div>
       <SearchCountries searchedValue={searchedCountry} onChange={handleFieldChange}></SearchCountries>
-      <CountryList countries={countries} filter={searchedCountry}></CountryList>
+      <CountryList countries={filteredCountries}></CountryList>
       {/*{countries.length === 0 ? display d un pays : display de tt}*/}
     </div>
   )
