@@ -5,3 +5,39 @@ content-type: application/json
     "name": "jean",
     "number": "+33 6 95 ETC"
 }
+
+###
+POST http://localhost:3001/api/persons
+content-type: application/json
+
+{
+    "name": "jean",
+    "number": "+33 6 95 ETC"
+}
+
+###
+POST http://localhost:3001/api/persons
+content-type: application/json
+
+{
+    "name": "",
+    "number": "+33 6 95 ETC"
+}
+
+###
+POST http://localhost:3001/api/persons
+content-type: application/json
+
+{
+    "name": "Jaël",
+    "number": ""
+}
+
+###
+POST http://localhost:3001/api/persons
+content-type: application/json
+
+{
+    "name": "",
+    "number": ""
+}
