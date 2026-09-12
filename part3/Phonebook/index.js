@@ -26,7 +26,7 @@ let phonebook = [
 
 app.use(express.json())
 
-app.get('/api/persons/', (request, response) => {
+app.get('/api/persons', (request, response) => {
    response.json(phonebook)
 })
 
@@ -46,6 +46,26 @@ app.delete('/api/persons/:id', (request, response) => {
   phonebook = phonebook.filter(person => person.id !== id)
 
   response.status(204).end()
+})
+
+const generateID = () => {
+  const id = Math.floor(Math.random() * 1000)
+  return id
+}
+
+app.post('/api/persons', (request, response) => {
+  const body = request.body
+  console.log(body)
+
+  const person = {
+    name: body.name,
+    number: body.number || null,
+    id: generateID(),
+  }
+  
+  phonebook = phonebook.concat(person)
+
+  response.send(person)
 })
 
 app.get('/info', (request, response) => {
