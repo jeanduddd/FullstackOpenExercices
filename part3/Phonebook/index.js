@@ -1,5 +1,7 @@
-var morgan = require('morgan')
+require('dotenv').config()
 const express = require('express')
+const Person = require('./models/person')
+var morgan = require('morgan')
 
 const app = express()
 
@@ -33,18 +35,16 @@ const tokens = morgan.token('body', function (req, res) { return JSON.stringify(
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'));
 
 app.get('/api/persons', (request, response) => {
-   response.json(phonebook)
+   Person.find({}).then(persons => {
+    response.json(persons)
+   })
 })
 
 app.get('/api/persons/:id', (request, response) => {
   const id = request.params.id
-  const person = phonebook.find((person) => person.id === id)
-
-  if (person) {
+  Person.findById(id).then(person => {
     response.json(person)
-  } else {
-    response.status(404).end()
-  }
+  })
 })
 
 app.delete('/api/persons/:id', (request, response) => {
@@ -68,7 +68,7 @@ app.post('/api/persons', (request, response) => {
     })
   }
 
-  const personExists = phonebook.find(person => person.name === body.name)
+  const personExists = false
   if (personExists){
     return response.status(400).json({
       error: 'name must be unique',
@@ -76,28 +76,27 @@ app.post('/api/persons', (request, response) => {
   }
 
   
-  const person = {
+  const person = new Person({
     name: body.name,
-    number: body.number,
-    id: generateID(),
-  }
+    number: body.number
+  })
   
-  phonebook = phonebook.concat(person)
-
-  response.send(person)
+  person.save().then(savedPerson => {
+    response.json(savedPerson)
+  })
 })
 
 app.get('/info', (request, response) => {
   const date = new Date()
-  const length = phonebook.length
-
-  response.send(`
+  Person.countDocuments({}).then(length => {
+    response.send(`
       <p>Phonebook has info for ${length} people</p>
       <p>${date}</p>
     `)
+  })
 })
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
