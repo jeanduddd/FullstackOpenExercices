@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
@@ -55,7 +54,7 @@ const App = () => {
         setNotificationMessage(null)
       }, 5000)
     })
-    .catch((err) => {
+    .catch(() => {
       setSuccess(false)
       setPersons(
         persons.filter(person => person.id !== id))
@@ -71,10 +70,7 @@ const App = () => {
 
   const addName = (event) => {
     event.preventDefault()
-    if (newName===''){
-      
-    }
-    else if (persons.filter(person => person.name === newName).length === 0){
+    if (persons.filter(person => person.name === newName).length === 0){
      
       const nameObject = {
         name: newName,
