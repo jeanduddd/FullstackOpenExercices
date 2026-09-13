@@ -92,6 +92,13 @@ const App = () => {
           setNotificationMessage(null)
         }, 5000)
       })
+      .catch(error => {
+        setSuccess(false)
+        setNotificationMessage(error.response.data.error)
+        setTimeout(() => {
+          setNotificationMessage(null)
+        }, 5000)
+      })
       
     }
     else{
@@ -111,6 +118,13 @@ const App = () => {
             setNotificationMessage(null)
           }, 5000)
         })
+        .catch(error => {
+        setSuccess(false)
+        setNotificationMessage(error.response.data.error)
+        setTimeout(() => {
+          setNotificationMessage(null)
+        }, 5000)
+      })
       }
     }
     setNewName('')
