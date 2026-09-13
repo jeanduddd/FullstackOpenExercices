@@ -1,1 +1,1 @@
-GET http://localhost:3001/api/persons
+GET https://phonebookbackend-06ie.onrender.com/api/persons
